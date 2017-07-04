@@ -35,19 +35,22 @@ namespace Skype_CryptoBot.Dialogs
                 returnmsg = getPrice("eth","eur","kraken");
                 
                 await context.PostAsync(returnmsg);
+                context.Wait(MessageReceivedAsync);
                 return;
             }
-
-
-
-
-
-            // return our reply to the user
+            
+            
+            
+            /* return our reply to the user
             await context.PostAsync($"You sent {activity.Text} which was {length} characters");
 
-            context.Wait(MessageReceivedAsync);
+            context.Wait(MessageReceivedAsync);*/
         }
 
+        //Get price from exchange and put it in human readable format
+        //TODO:
+        //More exchanges
+        //Various settings, such as volume, previous trades, charts, etc.
         private String getPrice(String fromCoin, String toCoin, String exchange)
         {
             String returnmsg = "";
@@ -58,12 +61,13 @@ namespace Skype_CryptoBot.Dialogs
                 {
                     var json = wc.DownloadString("https://api.kraken.com/0/public/Ticker?pair="+coins);
                     dynamic js = JObject.Parse(json);
-                    returnmsg += js.result.c[1];
+                    returnmsg += js.result.XETHZEUR.c[0]; //Deserialize a known object, remove hardcode!
                 }
 
             }
-
             return returnmsg;
         }
+
+
     }
 }
