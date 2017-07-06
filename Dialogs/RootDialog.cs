@@ -36,7 +36,7 @@ namespace Skype_CryptoBot.Dialogs
             // calculate something for us to return
             int length = (activity.Text ?? string.Empty).Length;
 
-            prazniListi = true;
+            
 
             if (prazniListi)
             {
@@ -82,11 +82,8 @@ namespace Skype_CryptoBot.Dialogs
             }
             else
             {
-                for(int i = 0; i < krakenCurrencies.Count; i++)
-                {
-                    returnmsg += krakenCurrencies[i];
-                }
-                returnmsg += "I'm sorry, but I don't have that keyword yet." + split[0];
+               
+                returnmsg += "I'm sorry, but I don't have that keyword yet.";
             }
 
             await context.PostAsync(returnmsg);
