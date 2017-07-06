@@ -39,3 +39,45 @@ c:\users\home\documents\visual studio 2017\Projects\Skype_CryptoBot\Skype_Crypto
 c:\users\home\documents\visual studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\obj\Debug\Skype_CryptoBot.csprojResolveAssemblyReference.cache
 c:\users\home\documents\visual studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\obj\Debug\Bot Application.dll
 c:\users\home\documents\visual studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\obj\Debug\Bot Application.pdb
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\Bot Application.dll.config
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\Bot Application.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\Bot Application.pdb
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\Autofac.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\Chronic.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\Microsoft.Bot.Builder.Autofac.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\Microsoft.Bot.Builder.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\Microsoft.Bot.Connector.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\Microsoft.IdentityModel.Protocol.Extensions.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\Microsoft.Rest.ClientRuntime.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\Microsoft.WindowsAzure.Configuration.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\Newtonsoft.Json.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\System.Net.Http.Formatting.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\System.Web.Http.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\System.Web.Http.WebHost.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\Autofac.xml
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\Microsoft.Bot.Builder.xml
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\Microsoft.Bot.Builder.Autofac.xml
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\Microsoft.Bot.Connector.xml
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\Microsoft.IdentityModel.Protocol.Extensions.xml
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\Microsoft.WindowsAzure.Configuration.xml
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\Newtonsoft.Json.xml
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\System.IdentityModel.Tokens.Jwt.xml
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\System.Net.Http.Formatting.xml
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\System.Web.Http.xml
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\System.Web.Http.WebHost.xml
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\ar\Microsoft.Bot.Builder.resources.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\cs\Microsoft.Bot.Builder.resources.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\de-dE\Microsoft.Bot.Builder.resources.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\en\Microsoft.Bot.Builder.resources.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\es\Microsoft.Bot.Builder.resources.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\fa\Microsoft.Bot.Builder.resources.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\fr\Microsoft.Bot.Builder.resources.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\it\Microsoft.Bot.Builder.resources.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\ja\Microsoft.Bot.Builder.resources.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\nl\Microsoft.Bot.Builder.resources.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\ru\Microsoft.Bot.Builder.resources.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\zh-hans\Microsoft.Bot.Builder.resources.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\obj\Debug\Skype_CryptoBot.csprojResolveAssemblyReference.cache
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\obj\Debug\Bot Application.dll
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\obj\Debug\Bot Application.pdb
