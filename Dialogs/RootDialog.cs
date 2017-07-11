@@ -5,6 +5,7 @@ using Microsoft.Bot.Connector;
 using System.Net;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace Skype_CryptoBot.Dialogs
 {
@@ -93,16 +94,26 @@ namespace Skype_CryptoBot.Dialogs
                     ContentType = "image/gif",
                     Name = "radar.gif"
                 });
-               
+                returnmsg = "http://www.arso.gov.si/vreme/napovedi%20in%20podatki/radar.gif";
             }
             else if (msg.Equals("arso gif"))
             {
-                replyToConversation.Attachments.Add(new Attachment()
-                {
-                    ContentUrl = "http://www.arso.gov.si/vreme/napovedi%20in%20podatki/radar_anim.gif",
-                    ContentType = "image/gif",
-                    Name = "radar_anim.gif"
-                });
+                AnimationCard card = new AnimationCard();
+                card.Title = "Arso animated radar";
+                List<MediaUrl> tmpList = new List<MediaUrl>();
+                tmpList.Add(new MediaUrl("http://www.arso.gov.si/vreme/napovedi%20in%20podatki/radar_anim.gif"));
+                card.Media = tmpList;
+                card.Autostart = true;
+                card.Autoloop = true;
+                card.Image = new ThumbnailUrl("http://www.arso.gov.si/vreme/napovedi%20in%20podatki/radar_anim.gif");
+                returnmsg = "http://www.arso.gov.si/vreme/napovedi%20in%20podatki/radar_anim.gif";
+                replyToConversation.Attachments.Add(card.ToAttachment());
+            }
+            else if (msg.Equals("help"))
+            {
+                //AdaptiveCard card = new AdaptiveCard();
+                //TEMPORARY. Will replace with AdaptiveCard or similar
+                
             }
             else
             {
@@ -111,6 +122,7 @@ namespace Skype_CryptoBot.Dialogs
                 
             }
             replyToConversation.Text = returnmsg;
+            
             await context.PostAsync(replyToConversation);
             context.Wait(MessageReceivedAsync);
 
