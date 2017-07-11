@@ -20,6 +20,7 @@ namespace Skype_CryptoBot.Dialogs
         public List<String> krakenAltCurrencies = new List<String>();
         public Boolean prazniListi = true;
 
+      
 
 
         public Task StartAsync(IDialogContext context)
@@ -32,11 +33,17 @@ namespace Skype_CryptoBot.Dialogs
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
         {
             var activity = await result as Activity;
-            
+            StateClient stateClient = activity.GetStateClient();
+           
+
             // calculate something for us to return
             int length = (activity.Text ?? string.Empty).Length;
 
-            
+            /*--------------------------------TEST-*/
+            Activity replyToConversation = activity.CreateReply();
+            replyToConversation.Recipient = activity.From;
+            replyToConversation.Type = "message";
+            /*---------------------------------------------*/
 
             if (prazniListi)
             {
@@ -45,8 +52,6 @@ namespace Skype_CryptoBot.Dialogs
             }
 
             //Get message, parse it 
-            //TODO:
-            //Dictionary?
             String msg = activity.Text;
             String returnmsg = "";
             String[] split = msg.Split(new char[] { ' ' },2);
@@ -56,13 +61,13 @@ namespace Skype_CryptoBot.Dialogs
             }
 
             //------------------------------------------POSSIBLE MESSAGES------------------------------------------------------
-
+            //Split into words, careful when checking for data!
             split = msg.Split(new char[] { ' ' }, 2);
             for(int i = 0; i < split.Length; i++)
             {
                 split[i] = split[i].ToLower();
             }
-           
+           //Check exchanges
             if(split.Length>1 && (krakenCurrencies.Contains(split[0]) || krakenAltCurrencies.Contains(split[0]))  && (krakenCurrencies.Contains(split[1]) || krakenAltCurrencies.Contains(split[1])))
             {
                 if (krakenAltCurrencies.Contains(split[0])){
@@ -80,13 +85,33 @@ namespace Skype_CryptoBot.Dialogs
             {
                 returnmsg = getMiningStats();
             }
+            else if (msg.Equals("arso"))
+            {
+                replyToConversation.Attachments.Add(new Attachment()
+                {
+                    ContentUrl = "http://www.arso.gov.si/vreme/napovedi%20in%20podatki/radar.gif",
+                    ContentType = "image/gif",
+                    Name = "radar.gif"
+                });
+               
+            }
+            else if (msg.Equals("arso gif"))
+            {
+                replyToConversation.Attachments.Add(new Attachment()
+                {
+                    ContentUrl = "http://www.arso.gov.si/vreme/napovedi%20in%20podatki/radar_anim.gif",
+                    ContentType = "image/gif",
+                    Name = "radar_anim.gif"
+                });
+            }
             else
             {
-               
+                
                 returnmsg += "I'm sorry, but I don't have that keyword yet.";
+                
             }
-
-            await context.PostAsync(returnmsg);
+            replyToConversation.Text = returnmsg;
+            await context.PostAsync(replyToConversation);
             context.Wait(MessageReceivedAsync);
 
             /* return our reply to the user
@@ -140,11 +165,15 @@ namespace Skype_CryptoBot.Dialogs
                 double bal = float.Parse((String)js.unpaid);
                 bal *= Math.Pow(10,-18);
                 returnmsg += js.workers.rig.reportedHashRate + "  Balance: " +  bal.ToString()+"ETH\n"; //Deserialize an unknown object, remove hardcode!
-                returnmsg += "This amounts to: XXX EUR";
+               
             }
             return returnmsg;
 
         }
+
+        
+
+
         //Fetches first-time data, so we can check for input validity
         private void checkExchanges()
         {
@@ -172,14 +201,12 @@ namespace Skype_CryptoBot.Dialogs
                          tmp = (String)x.Name;
                         krakenCurrencies.Add(tmp.ToLower());
                         tmp = (String)x.Value.altname;
-                        krakenAltCurrencies.Add(tmp.ToLower());
-
-                   
-                    
-                        
+                        krakenAltCurrencies.Add(tmp.ToLower());         
                     }
-                }
-            
+                }           
         }
+
+        
+
     }
 }
