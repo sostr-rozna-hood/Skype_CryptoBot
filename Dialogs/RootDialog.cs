@@ -102,60 +102,74 @@ namespace Skype_CryptoBot.Dialogs
                 String datum = "";
                 String temp = "";
                 String vbes = "";
-                Container glavni = new Container();
+                String slikaUrl = "";
+                /*Container glavni = new Container();
                 ColumnSet vrstice = new ColumnSet();
                 glavni.Items = new List<CardElement>();
                 Column slikica = new Column();
                 Column temperatura = new Column();
-                Column vbesedi = new Column();
-                Image slika = new Image();
-                              
+                Column vbesedi = new Column();*/
+                CardImage slika = new CardImage();
+                List<CardImage> slikice = new List<CardImage>();
+                slikice.Add(slika);
+
+
                 using (WebClient wc = new WebClient())
                 {
                     var json = wc.DownloadString("http://api.openweathermap.org/data/2.5/weather?q=Ljubljana&units=metric&appid=5ce4f42d030fee115dbd958987b37797");
                     dynamic js = JObject.Parse(json);
                     datum = FromUnixTime(Convert.ToInt64(js.dt)).AddHours(2).ToString();
-            
-                    
-                   // returnmsg += js.weather[0].description;
-                    slika.Url = "http://openweathermap.org/img/w/" + js.weather[0].icon+".png";
                     temp = js.main.temp;
-                   vbes = js.weather[0].description;
+                    slikaUrl = "http://openweathermap.org/img/w/" + js.weather[0].icon + ".png";
+
+                   // returnmsg += js.weather[0].description;
+                   /* slika.Url = "http://openweathermap.org/img/w/" + js.weather[0].icon+".png";
+                    temp = js.main.temp;
+                   vbes = js.weather[0].description;*/
                 }
-
-                slikica.Items.Add(slika);
-                temperatura.Items.Add(new TextBlock()
+                slika.Url = slikaUrl;
+                HeroCard plCard = new HeroCard()
                 {
-                    Text = temp + "°C",
-                    Size = TextSize.ExtraLarge,
-                    Weight = TextWeight.Bolder
-                });
-                temperatura.Size = "auto";
-                vbesedi.Items.Add(new TextBlock()
-                {
-                    Text = vbes
-                });
-                vrstice.Columns.Add(slikica);
-                vrstice.Columns.Add(temperatura);
-                vrstice.Columns.Add(vbesedi);
-                glavni.Items.Add(vrstice);
-
-
-
-                AdaptiveCard card = new AdaptiveCard();
-                card.Body.Add(new TextBlock()
-                {
-                    Text = "Ljubljana, "+datum,
-                    Size = TextSize.Medium,
-                    Weight = TextWeight.Bolder 
-                });
-                card.Body.Add(glavni);
-                Attachment attachment = new Attachment()
-                {
-                    ContentType = AdaptiveCard.ContentType,
-                    Content = card
+                    Title = $"Ljubljana, " + datum,
+                    Subtitle = temp+ "°C",
+                    Images = slikice,
+                   
                 };
-                replyToConversation.Attachments.Add(attachment);
+
+                /* slikica.Items.Add(slika);
+                 temperatura.Items.Add(new TextBlock()
+                 {
+                     Text = temp + "°C",
+                     Size = TextSize.ExtraLarge,
+                     Weight = TextWeight.Bolder
+                 });
+                 temperatura.Size = "auto";
+                 vbesedi.Items.Add(new TextBlock()
+                 {
+                     Text = vbes
+                 });
+                 vrstice.Columns.Add(slikica);
+                 vrstice.Columns.Add(temperatura);
+                 vrstice.Columns.Add(vbesedi);
+                 glavni.Items.Add(vrstice);
+
+
+
+                 AdaptiveCard card = new AdaptiveCard();
+                 card.Body.Add(new TextBlock()
+                 {
+                     Text = "Ljubljana, "+datum,
+                     Size = TextSize.Medium,
+                     Weight = TextWeight.Bolder 
+                 });
+                 card.Body.Add(glavni);
+                 Attachment attachment = new Attachment()
+                 {
+                     ContentType = AdaptiveCard.ContentType,
+                     Content = card
+                 };*/
+                Attachment plAttachment = plCard.ToAttachment();
+                replyToConversation.Attachments.Add(plAttachment);
             }
             else if (msg.Equals("help"))
             {
