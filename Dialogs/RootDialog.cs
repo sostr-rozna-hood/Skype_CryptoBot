@@ -99,21 +99,10 @@ namespace Skype_CryptoBot.Dialogs
             }
             else if (msg.Equals("vreme"))
             {
-                String datum = "";
-                String temp = "";
-                String vbes = "";
-                String slikaUrl = "";
-                /*Container glavni = new Container();
-                ColumnSet vrstice = new ColumnSet();
-                glavni.Items = new List<CardElement>();
-                Column slikica = new Column();
-                Column temperatura = new Column();
-                Column vbesedi = new Column();*/
+                String datum,temp,vbes,slikaUrl = "";
                 CardImage slika = new CardImage();
                 List<CardImage> slikice = new List<CardImage>();
                 slikice.Add(slika);
-
-
                 using (WebClient wc = new WebClient())
                 {
                     var json = wc.DownloadString("http://api.openweathermap.org/data/2.5/weather?q=Ljubljana&units=metric&appid=5ce4f42d030fee115dbd958987b37797");
@@ -121,55 +110,42 @@ namespace Skype_CryptoBot.Dialogs
                     datum = FromUnixTime(Convert.ToInt64(js.dt)).AddHours(2).ToString();
                     temp = js.main.temp;
                     slikaUrl = "http://openweathermap.org/img/w/" + js.weather[0].icon + ".png";
-
-                   // returnmsg += js.weather[0].description;
-                   /* slika.Url = "http://openweathermap.org/img/w/" + js.weather[0].icon+".png";
-                    temp = js.main.temp;
-                   vbes = js.weather[0].description;*/
+                    vbes = js.weather[0].description;
                 }
                 slika.Url = slikaUrl;
                 HeroCard plCard = new HeroCard()
                 {
-                    Title = $"Ljubljana, " + datum,
-                    Subtitle = temp+ "°C",
+                    Title =  temp + "°C ,"+vbes,
+                    Subtitle = $"Ljubljana, " + datum ,
                     Images = slikice,
                    
                 };
-
-                /* slikica.Items.Add(slika);
-                 temperatura.Items.Add(new TextBlock()
-                 {
-                     Text = temp + "°C",
-                     Size = TextSize.ExtraLarge,
-                     Weight = TextWeight.Bolder
-                 });
-                 temperatura.Size = "auto";
-                 vbesedi.Items.Add(new TextBlock()
-                 {
-                     Text = vbes
-                 });
-                 vrstice.Columns.Add(slikica);
-                 vrstice.Columns.Add(temperatura);
-                 vrstice.Columns.Add(vbesedi);
-                 glavni.Items.Add(vrstice);
-
-
-
-                 AdaptiveCard card = new AdaptiveCard();
-                 card.Body.Add(new TextBlock()
-                 {
-                     Text = "Ljubljana, "+datum,
-                     Size = TextSize.Medium,
-                     Weight = TextWeight.Bolder 
-                 });
-                 card.Body.Add(glavni);
-                 Attachment attachment = new Attachment()
-                 {
-                     ContentType = AdaptiveCard.ContentType,
-                     Content = card
-                 };*/
                 Attachment plAttachment = plCard.ToAttachment();
                 replyToConversation.Attachments.Add(plAttachment);
+            }
+            else if (msg.Equals("napoved"))
+            {
+                String slika = "http://openweathermap.org/img/w/10d.png";
+                List<CardImage> slikice = new List<CardImage>();
+                CardImage slika1 = new CardImage();
+                slika1.Url = slika;
+                slikice.Add(slika1);
+                HeroCard plCard = new HeroCard()
+                {
+                    Title = "Testiranje",
+                    Images = slikice
+                };
+                HeroCard pl1Card = new HeroCard()
+                {
+                    Title = "test2",
+                    Images = slikice
+                };
+                Attachment plAttachment = plCard.ToAttachment();
+                Attachment pl2Attachment = pl1Card.ToAttachment();
+                replyToConversation.AttachmentLayout = "carousel";
+                replyToConversation.Attachments.Add(plAttachment);
+                replyToConversation.Attachments.Add(pl2Attachment);
+
             }
             else if (msg.Equals("help"))
             {
