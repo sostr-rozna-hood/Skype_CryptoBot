@@ -6,6 +6,7 @@ using System.Net;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Collections;
+using AdaptiveCards;
 
 namespace Skype_CryptoBot.Dialogs
 {
@@ -94,26 +95,78 @@ namespace Skype_CryptoBot.Dialogs
                     ContentType = "image/gif",
                     Name = "radar.gif"
                 });
-                returnmsg = "http://www.arso.gov.si/vreme/napovedi%20in%20podatki/radar.gif";
+               // returnmsg = "http://www.arso.gov.si/vreme/napovedi%20in%20podatki/radar.gif";
             }
-            else if (msg.Equals("arso gif"))
+            else if (msg.Equals("vreme"))
             {
-                AnimationCard card = new AnimationCard();
-                card.Title = "Arso animated radar";
-                List<MediaUrl> tmpList = new List<MediaUrl>();
-                tmpList.Add(new MediaUrl("http://www.arso.gov.si/vreme/napovedi%20in%20podatki/radar_anim.gif"));
-                card.Media = tmpList;
-                card.Autostart = true;
-                card.Autoloop = true;
-                card.Image = new ThumbnailUrl("http://www.arso.gov.si/vreme/napovedi%20in%20podatki/radar_anim.gif");
-                returnmsg = "http://www.arso.gov.si/vreme/napovedi%20in%20podatki/radar_anim.gif";
-                replyToConversation.Attachments.Add(card.ToAttachment());
+                String datum = "";
+                String temp = "";
+                String vbes = "";
+                Container glavni = new Container();
+                ColumnSet vrstice = new ColumnSet();
+                glavni.Items = new List<CardElement>();
+                Column slikica = new Column();
+                Column temperatura = new Column();
+                Column vbesedi = new Column();
+                Image slika = new Image();
+                              
+                using (WebClient wc = new WebClient())
+                {
+                    var json = wc.DownloadString("http://api.openweathermap.org/data/2.5/weather?q=Ljubljana&units=metric&appid=5ce4f42d030fee115dbd958987b37797");
+                    dynamic js = JObject.Parse(json);
+                    datum = FromUnixTime(Convert.ToInt64(js.dt)).AddHours(2).ToString();
+            
+                    
+                   // returnmsg += js.weather[0].description;
+                    slika.Url = "http://openweathermap.org/img/w/" + js.weather[0].icon+".png";
+                    temp = js.main.temp;
+                   vbes = js.weather[0].description;
+                }
+
+                slikica.Items.Add(slika);
+                temperatura.Items.Add(new TextBlock()
+                {
+                    Text = temp + "°C",
+                    Size = TextSize.ExtraLarge,
+                    Weight = TextWeight.Bolder
+                });
+                temperatura.Size = "auto";
+                vbesedi.Items.Add(new TextBlock()
+                {
+                    Text = vbes
+                });
+                vrstice.Columns.Add(slikica);
+                vrstice.Columns.Add(temperatura);
+                vrstice.Columns.Add(vbesedi);
+                glavni.Items.Add(vrstice);
+
+
+
+                AdaptiveCard card = new AdaptiveCard();
+                card.Body.Add(new TextBlock()
+                {
+                    Text = "Ljubljana, "+datum,
+                    Size = TextSize.Medium,
+                    Weight = TextWeight.Bolder 
+                });
+                card.Body.Add(glavni);
+                Attachment attachment = new Attachment()
+                {
+                    ContentType = AdaptiveCard.ContentType,
+                    Content = card
+                };
+                replyToConversation.Attachments.Add(attachment);
             }
             else if (msg.Equals("help"))
             {
                 //AdaptiveCard card = new AdaptiveCard();
                 //TEMPORARY. Will replace with AdaptiveCard or similar
-                
+                returnmsg += "Currently supported commands:\n\n";
+                returnmsg += "mining - Shows current mining status\n\n";
+                returnmsg += "XXX YYY - Where XXX and YYY are cryptocurrency pairs\n\n";
+                returnmsg += "arso - Shows current rain radar image for Slovenia\n\n";
+                returnmsg += "vreme - Shows current weather";
+               
             }
             else
             {
@@ -176,14 +229,21 @@ namespace Skype_CryptoBot.Dialogs
                 dynamic js = JObject.Parse(json);
                 double bal = float.Parse((String)js.unpaid);
                 bal *= Math.Pow(10,-18);
-                returnmsg += js.workers.rig.reportedHashRate + "  Balance: " +  bal.ToString()+"ETH\n"; //Deserialize an unknown object, remove hardcode!
+                returnmsg += js.reportedHashRate + "  Balance: " +  bal.ToString()+"ETH\n"; //Deserialize an unknown object, remove hardcode!
                
             }
             return returnmsg;
 
         }
 
-        
+        //Taken from StackExchange, Epoch time converter https://stackoverflow.com/questions/2883576/how-do-you-convert-epoch-time-in-c
+        public static DateTime FromUnixTime(long unixTime)
+        {
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return epoch.AddSeconds(unixTime);
+        }
+
+
 
 
         //Fetches first-time data, so we can check for input validity

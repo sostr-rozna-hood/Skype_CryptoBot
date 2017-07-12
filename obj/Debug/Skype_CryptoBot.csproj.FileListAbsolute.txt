@@ -81,3 +81,4 @@ C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_Crypt
 C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\obj\Debug\Skype_CryptoBot.csprojResolveAssemblyReference.cache
 C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\obj\Debug\Bot Application.dll
 C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\obj\Debug\Bot Application.pdb
+C:\Users\timot\Documents\Visual Studio 2017\Projects\Skype_CryptoBot\Skype_CryptoBot\bin\AdaptiveCards.dll
