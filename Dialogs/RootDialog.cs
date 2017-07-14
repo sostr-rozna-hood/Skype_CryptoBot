@@ -76,7 +76,11 @@ namespace Skype_CryptoBot.Dialogs
             if (split[0].Equals("ex"))
             {
                 BotData userData = await stateClient.BotState.GetUserDataAsync(activity.ChannelId, activity.From.Id);
-                String exchange = userData.GetProperty<String>("exchange").ToLower();
+                var exchange = userData.GetProperty<String>("exchange");
+                if (exchange != null)
+                {
+                    exchange = exchange.ToLower();
+                }
                 if (split.Length == 1)
                 {
                     returnmsg += "No parameters for keyword ex. \n Usage: \"ex XXX YYY\" for currency pairs or \"ex set\" for setting defaults exchanges.";
@@ -125,9 +129,6 @@ namespace Skype_CryptoBot.Dialogs
                     
                     returnmsg = getPrice(split[1], split[2], exchange);  
                 }
-
-
-
             }
 
             else if (split[0].Equals("mining"))
