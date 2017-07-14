@@ -20,8 +20,10 @@ namespace Skype_CryptoBot.Dialogs
         public List<String> krakenCurrencyPairs = new List<String>();
         public List<String> krakenCurrencies = new List<String>();
         public List<String> krakenAltCurrencies = new List<String>();
+        public List<String> bittrexCurrencies = new List<string>();
+        public List<String> bittrexCurrencyPairs = new List<string>();
         public Boolean prazniListi = true;
-
+        public List<String> exchanges = new List<String>(new String[] { "kraken", "poloniex", "bittrex" });
       
 
 
@@ -46,7 +48,7 @@ namespace Skype_CryptoBot.Dialogs
             replyToConversation.Recipient = activity.From;
             replyToConversation.Type = "message";
             /*---------------------------------------------*/
-
+            prazniListi = true;
             if (prazniListi)
             {
                 checkExchanges();
@@ -64,30 +66,75 @@ namespace Skype_CryptoBot.Dialogs
 
             //------------------------------------------POSSIBLE MESSAGES------------------------------------------------------
             //Split into words, careful when checking for data!
-            split = msg.Split(new char[] { ' ' }, 2);
+            split = msg.Split(new char[] { ' ' });
             for(int i = 0; i < split.Length; i++)
             {
                 split[i] = split[i].ToLower();
             }
-           //Check exchanges
-            if(split.Length>1 && (krakenCurrencies.Contains(split[0]) || krakenAltCurrencies.Contains(split[0]))  && (krakenCurrencies.Contains(split[1]) || krakenAltCurrencies.Contains(split[1])))
+            int forceExchange = -1; // 1 kraken, 2 polo, 3 bittrex
+            //Check exchanges
+            if (split[0].Equals("ex"))
             {
-                if (krakenAltCurrencies.Contains(split[0])){
-                    split[0] = krakenCurrencies[krakenAltCurrencies.IndexOf(split[0])];
-                }
-                if (krakenAltCurrencies.Contains(split[1]))
+                BotData userData = await stateClient.BotState.GetUserDataAsync(activity.ChannelId, activity.From.Id);
+                String exchange = userData.GetProperty<String>("exchange").ToLower();
+                if (split.Length == 1)
                 {
-                    split[1] = krakenCurrencies[krakenAltCurrencies.IndexOf(split[1])];
+                    returnmsg += "No parameters for keyword ex. \n Usage: \"ex XXX YYY\" for currency pairs or \"ex set\" for setting defaults exchanges.";
+                }
+                else if(split[1].Equals("set") && split.Length == 2)
+                {
+                    returnmsg += "Current default: "+exchange+" .What exchange would you to set as the default?";
+                    replyToConversation.SuggestedActions = new SuggestedActions()
+                    {
+                        Actions = new List<CardAction>(){
+                         new CardAction(){ Title = "Kraken", Type=ActionTypes.ImBack, Value="ex set kraken" },
+                         new CardAction(){ Title = "Poloniex", Type=ActionTypes.ImBack, Value="ex set poloniex" },
+                         new CardAction(){ Title = "Bittrex", Type=ActionTypes.ImBack, Value="ex set bittrex" }}
+                    };
+                }
+                else if (split[1].Equals("set") && split.Length > 2)
+                {
+                    if (exchanges.Contains(split[2])){
+                        // userData.SetProperty<String>("exchange", split[2]);
+                       // userData.Data = split[2];
+                        var data = context.UserData;
+                       data.SetValue("exchange",split[2]);
+                    }
+                    
+                    returnmsg += "Exchange " + split[2] + " set as default.";
+                    
+                }
+                else if (split.Length < 3)
+                {
+                    returnmsg += "Wrong parameters! Please try again. You can use \"ex XXX YYY\" for currency pairs or \"ex set\" for setting default exchanges.";
+                }
+                else if (exchange==null)
+                {
+                    returnmsg += "You haven't selected your default exchange yet. Please do so by clicking your preffered exchange below.";
+                    replyToConversation.TextFormat = TextFormatTypes.Plain;
+                    replyToConversation.SuggestedActions = new SuggestedActions()
+                    {
+                        Actions = new List<CardAction>(){
+                         new CardAction(){ Title = "Kraken", Type=ActionTypes.ImBack, Value="ex set kraken" },
+                         new CardAction(){ Title = "Poloniex", Type=ActionTypes.ImBack, Value="ex set poloniex" },
+                         new CardAction(){ Title = "Bittrex", Type=ActionTypes.ImBack, Value="ex set bittrex" }}
+                    };
+                }
+                else if (exchanges.Contains(exchange))
+                {
+                    
+                    returnmsg = getPrice(split[1], split[2], exchange);  
                 }
 
-                returnmsg = getPrice(split[0],split[1],"kraken");
+
+
             }
- 
-            else if (msg.Equals("mining"))
+
+            else if (split[0].Equals("mining"))
             {
                 returnmsg = getMiningStats();
             }
-            else if (msg.Equals("arso"))
+            else if (split[0].Equals("arso"))
             {
                 replyToConversation.Attachments.Add(new Attachment()
                 {
@@ -95,9 +142,8 @@ namespace Skype_CryptoBot.Dialogs
                     ContentType = "image/gif",
                     Name = "radar.gif"
                 });
-               // returnmsg = "http://www.arso.gov.si/vreme/napovedi%20in%20podatki/radar.gif";
             }
-            else if (msg.Equals("vreme"))
+            else if (split[0].Equals("vreme"))
             {
                 String datum,temp,vbes,slikaUrl = "";
                 CardImage slika = new CardImage();
@@ -123,46 +169,34 @@ namespace Skype_CryptoBot.Dialogs
                 Attachment plAttachment = plCard.ToAttachment();
                 replyToConversation.Attachments.Add(plAttachment);
             }
-            else if (msg.Equals("napoved"))
+            else if (split[0].Equals("napoved"))
             {
-                String slika = "http://openweathermap.org/img/w/10d.png";
-                List<CardImage> slikice = new List<CardImage>();
-                CardImage slika1 = new CardImage();
-                slika1.Url = slika;
-                slikice.Add(slika1);
-                HeroCard plCard = new HeroCard()
-                {
-                    Title = "Testiranje",
-                    Images = slikice
-                };
-                HeroCard pl1Card = new HeroCard()
-                {
-                    Title = "test2",
-                    Images = slikice
-                };
-                Attachment plAttachment = plCard.ToAttachment();
-                Attachment pl2Attachment = pl1Card.ToAttachment();
-                replyToConversation.AttachmentLayout = "carousel";
-                replyToConversation.Attachments.Add(plAttachment);
-                replyToConversation.Attachments.Add(pl2Attachment);
+                
+               // returnmsg += sentGreeting;
 
             }
-            else if (msg.Equals("help"))
+            else if (split[0].Equals("help"))
             {
                 //AdaptiveCard card = new AdaptiveCard();
                 //TEMPORARY. Will replace with AdaptiveCard or similar
+                replyToConversation.TextFormat = TextFormatTypes.Plain;
                 returnmsg += "Currently supported commands:\n\n";
                 returnmsg += "mining - Shows current mining status\n\n";
-                returnmsg += "XXX YYY - Where XXX and YYY are cryptocurrency pairs\n\n";
+                returnmsg += "ex XXX YYY - Where XXX and YYY are cryptocurrency pairs (e.g. \"ex ETH EUR\")\n\n";
                 returnmsg += "arso - Shows current rain radar image for Slovenia\n\n";
-                returnmsg += "vreme - Shows current weather";
-               
+                returnmsg += "vreme - Shows current weather\n";
+
+                returnmsg += "You can also choose from the buttons below:";
+                replyToConversation.SuggestedActions = new SuggestedActions(){
+                    Actions = new List<CardAction>(){
+                         new CardAction(){ Title = "Mining", Type=ActionTypes.ImBack, Value="mining" },
+                         new CardAction(){ Title = "Arso", Type=ActionTypes.ImBack, Value="arso" },
+                         new CardAction(){ Title = "Vreme", Type=ActionTypes.ImBack, Value="vreme" }}
+                };
             }
             else
-            {
-                
-                returnmsg += "I'm sorry, but I don't have that keyword yet.";
-                
+            {          
+                returnmsg += "I'm sorry, but I don't have that keyword yet. Please type \"help\" in order to see available keywords.";   
             }
             replyToConversation.Text = returnmsg;
             
@@ -177,19 +211,32 @@ namespace Skype_CryptoBot.Dialogs
 
         //Get price from exchange and put it in human readable format
         //TODO:
-        //More exchanges, list of coin asset pairs (Dictionary?), custom trades
+        //More exchanges, custom trades
         //Various settings, such as volume, previous trades, charts, etc.
         //Error handling
         private String getPrice(String fromCoin, String toCoin, String exchange)
         {
             String returnmsg = "";
-            String coins = fromCoin + toCoin;
-
+            String coins = "";
+            String fromR = fromCoin.ToUpper();
+            String toR = toCoin.ToUpper();
             //KRAKEN
             if (exchange.Equals("kraken"))
             {
+                if ((krakenCurrencies.Contains(fromCoin) || krakenAltCurrencies.Contains(fromCoin)) && (krakenCurrencies.Contains(toCoin) || krakenAltCurrencies.Contains(toCoin)))
+                {
+                    if (krakenAltCurrencies.Contains(fromCoin))
+                    {
+                        fromCoin = krakenCurrencies[krakenAltCurrencies.IndexOf(fromCoin)];
+                    }
+                    if (krakenAltCurrencies.Contains(toCoin))
+                    {
+                        toCoin = krakenCurrencies[krakenAltCurrencies.IndexOf(toCoin)];
+                    }
+                }
+                coins = fromCoin + toCoin;
                 if (!krakenCurrencyPairs.Contains(coins)) {
-                    returnmsg += "Unknown currency pair!";
+                    returnmsg += "Unknown currency pair!(" + fromR + "," + toR + ")";
                     return returnmsg;
                 }
                 using (WebClient wc = new WebClient())
@@ -197,10 +244,37 @@ namespace Skype_CryptoBot.Dialogs
                     coins = coins.ToUpper();
                     var json = wc.DownloadString("https://api.kraken.com/0/public/Ticker?pair="+coins);
                     dynamic js = JObject.Parse(json);
-                    returnmsg += js.result[coins].c[0]; //Deserialize an unknown object, remove hardcode!
-                   
+                    returnmsg += "1 "+fromR + "=" +js.result[coins].c[0]+" "+toR; //Deserialize an unknown object, remove hardcode!               
                 }
+            }
+            //POLONIEX
 
+            //BITTREX
+            if (exchange.Equals("bittrex"))
+            {
+                if (!bittrexCurrencies.Contains(fromCoin))
+                {
+                    returnmsg += "Wrong coin!" + fromCoin+ "\n";
+                    return returnmsg;
+                }
+                if (!bittrexCurrencies.Contains(toCoin))
+                {
+                    returnmsg += "Wrong coin!" + toCoin + "\n";
+                    return returnmsg;
+                }
+                coins = toCoin + "-" + fromCoin;
+                if (!bittrexCurrencyPairs.Contains(coins))
+                {
+                    returnmsg += "Unknown currency pair!(" + fromCoin + "," + ")";
+                    return returnmsg;
+                }
+               using (WebClient wc = new WebClient())
+                {
+                    coins = coins.ToUpper();
+                    var json = wc.DownloadString("https://bittrex.com/api/v1.1/public/getticker?market=" + coins);
+                    dynamic js = JObject.Parse(json);
+                    returnmsg += "1 " + fromCoin.ToUpper() + "=" + js.result.Last + " " + toCoin.ToUpper(); //Deserialize an unknown object, remove hardcode!               
+                }
             }
             return returnmsg;
         }
@@ -219,8 +293,7 @@ namespace Skype_CryptoBot.Dialogs
                 dynamic js = JObject.Parse(json);
                 double bal = float.Parse((String)js.unpaid);
                 bal *= Math.Pow(10,-18);
-                returnmsg += js.reportedHashRate + "  Balance: " +  bal.ToString()+"ETH\n"; //Deserialize an unknown object, remove hardcode!
-               
+                returnmsg += js.reportedHashRate + "  Balance: " +  bal.ToString()+"ETH\n"; //Deserialize an unknown object, remove hardcode!     
             }
             return returnmsg;
 
@@ -252,8 +325,7 @@ namespace Skype_CryptoBot.Dialogs
                         krakenCurrencyPairs.Add(tmp.ToLower());
                     }
                 }
-            //If currency list is empty, fill it
-         
+            //If currency list is empty, fill it  
                 using (WebClient wc = new WebClient())
                 {
                     var json = wc.DownloadString("https://api.kraken.com/0/public/Assets");
@@ -265,7 +337,29 @@ namespace Skype_CryptoBot.Dialogs
                         tmp = (String)x.Value.altname;
                         krakenAltCurrencies.Add(tmp.ToLower());         
                     }
-                }           
+                }
+            //Bittrex
+            using (WebClient wc = new WebClient())
+            {
+                var json = wc.DownloadString("https://bittrex.com/api/v1.1/public/getmarkets");
+                dynamic js = JObject.Parse(json);
+                foreach (var x in js.result)
+                {
+                    tmp = (String)x.MarketName;
+                    bittrexCurrencyPairs.Add(tmp.ToLower());
+                }
+            }
+
+            using (WebClient wc = new WebClient())
+            {
+                var json = wc.DownloadString("https://bittrex.com/api/v1.1/public/getcurrencies");
+                dynamic js = JObject.Parse(json);
+                foreach (var x in js.result)
+                {
+                    tmp = (String)x.Currency;
+                    bittrexCurrencies.Add(tmp.ToLower());
+                }
+            }
         }
 
         
