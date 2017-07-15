@@ -88,13 +88,15 @@ namespace Skype_CryptoBot.Dialogs
                 else if(split[1].Equals("set") && split.Length == 2)
                 {
                     returnmsg += "Current default: "+exchange+" .What exchange would you to set as the default?";
-                    replyToConversation.SuggestedActions = new SuggestedActions()
+                    HeroCard heroj = new HeroCard()
                     {
-                        Actions = new List<CardAction>(){
+                        Buttons = new List<CardAction>(){
                          new CardAction(){ Title = "Kraken", Type=ActionTypes.ImBack, Value="ex set kraken" },
                          new CardAction(){ Title = "Poloniex", Type=ActionTypes.ImBack, Value="ex set poloniex" },
                          new CardAction(){ Title = "Bittrex", Type=ActionTypes.ImBack, Value="ex set bittrex" }}
                     };
+                    Attachment plAttachment = heroj.ToAttachment();
+                    replyToConversation.Attachments.Add(plAttachment);
                 }
                 else if (split[1].Equals("set") && split.Length > 2)
                 {
@@ -115,14 +117,15 @@ namespace Skype_CryptoBot.Dialogs
                 else if (exchange==null)
                 {
                     returnmsg += "You haven't selected your default exchange yet. Please do so by clicking your preffered exchange below.";
-                    replyToConversation.TextFormat = TextFormatTypes.Plain;
-                    replyToConversation.SuggestedActions = new SuggestedActions()
+                    HeroCard heroj = new HeroCard()
                     {
-                        Actions = new List<CardAction>(){
+                        Buttons =  new List<CardAction>(){
                          new CardAction(){ Title = "Kraken", Type=ActionTypes.ImBack, Value="ex set kraken" },
                          new CardAction(){ Title = "Poloniex", Type=ActionTypes.ImBack, Value="ex set poloniex" },
                          new CardAction(){ Title = "Bittrex", Type=ActionTypes.ImBack, Value="ex set bittrex" }}
                     };
+                    Attachment plAttachment = heroj.ToAttachment();
+                    replyToConversation.Attachments.Add(plAttachment);
                 }
                 else if (exchanges.Contains(exchange))
                 {
@@ -188,12 +191,15 @@ namespace Skype_CryptoBot.Dialogs
                 returnmsg += "vreme - Shows current weather\n";
 
                 returnmsg += "You can also choose from the buttons below:";
-                replyToConversation.SuggestedActions = new SuggestedActions(){
-                    Actions = new List<CardAction>(){
+                HeroCard heroj = new HeroCard()
+                {
+                    Buttons = new List<CardAction>(){
                          new CardAction(){ Title = "Mining", Type=ActionTypes.ImBack, Value="mining" },
                          new CardAction(){ Title = "Arso", Type=ActionTypes.ImBack, Value="arso" },
                          new CardAction(){ Title = "Vreme", Type=ActionTypes.ImBack, Value="vreme" }}
                 };
+                Attachment plAttachment = heroj.ToAttachment();
+                replyToConversation.Attachments.Add(plAttachment);
             }
             else
             {          
@@ -238,15 +244,18 @@ namespace Skype_CryptoBot.Dialogs
                 coins = fromCoin + toCoin;
                 if (!krakenCurrencyPairs.Contains(coins)) {
                     returnmsg += "Unknown currency pair!(" + fromR + "," + toR + ")";
-                    return returnmsg;
+                   
                 }
-                using (WebClient wc = new WebClient())
+                else
                 {
-                    coins = coins.ToUpper();
-                    var json = wc.DownloadString("https://api.kraken.com/0/public/Ticker?pair="+coins);
-                    dynamic js = JObject.Parse(json);
-                    returnmsg += "1 "+fromR + "=" +js.result[coins].c[0]+" "+toR; //Deserialize an unknown object, remove hardcode!               
-                }
+                    using (WebClient wc = new WebClient())
+                    {
+                        coins = coins.ToUpper();
+                        var json = wc.DownloadString("https://api.kraken.com/0/public/Ticker?pair=" + coins);
+                        dynamic js = JObject.Parse(json);
+                        returnmsg += "1 " + fromR + "=" + js.result[coins].c[0] + " " + toR; //Deserialize an unknown object, remove hardcode!               
+                    }
+                }        
             }
             //POLONIEX
 
