@@ -83,7 +83,13 @@ namespace Skype_CryptoBot.Dialogs
                 }
                 if (split.Length == 1)
                 {
-                    returnmsg += "No parameters for keyword ex. \n Usage: \"ex XXX YYY\" for currency pairs or \"ex set\" for setting defaults exchanges.";
+                    returnmsg += "No parameters for keyword ex. \n Usage: \"ex XXX YYY\" for currency pairs or \"ex set\" for setting defaults exchanges. In case of errors, try \"ex reset\".";
+                }
+                else if (split[1].Equals("reset") && split.Length==2)
+                {
+                    var data = context.UserData;
+                    data.RemoveValue("exchange");
+                    returnmsg += "Parameters reset! Please choose your default exchange again by typing \"ex set\".";
                 }
                 else if(split[1].Equals("set") && split.Length == 2)
                 {
