@@ -140,8 +140,7 @@ namespace Skype_CryptoBot.Dialogs
                     returnmsg = getPrice(split[1], split[2], exchange);  
                 }
             }
-
-             if (split[0].Equals("mining"))
+            else if (split[0].Equals("mining"))
             {
                 returnmsg = getMiningStats();
             }
