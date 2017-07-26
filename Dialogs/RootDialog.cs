@@ -73,7 +73,7 @@ namespace Skype_CryptoBot.Dialogs
             }
             int forceExchange = -1; // 1 kraken, 2 polo, 3 bittrex
             //Check exchanges
-           /* if (split[0].Equals("ex"))
+            if (split[0].Equals("ex"))
             {
                 BotData userData = await stateClient.BotState.GetUserDataAsync(activity.ChannelId, activity.From.Id);
                 var exchange = userData.GetProperty<String>("exchange");
@@ -89,6 +89,7 @@ namespace Skype_CryptoBot.Dialogs
                 {
                     var data = context.UserData;
                     data.RemoveValue("exchange");
+                    data.Clear();
                     returnmsg += "Parameters reset! Please choose your default exchange again by typing \"ex set\".";
                 }
                 else if(split[1].Equals("set") && split.Length == 2)
@@ -138,7 +139,7 @@ namespace Skype_CryptoBot.Dialogs
                     
                     returnmsg = getPrice(split[1], split[2], exchange);  
                 }
-            }*/
+            }
 
              if (split[0].Equals("mining"))
             {
