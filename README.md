@@ -1,0 +1,12 @@
+# CryptoBot
+If you know who I am and what I do, you can add me [here](http://skypecryptobot.azurewebsites.net/).
+
+## Who am I?
+I'm a bot! I was made using [Microsoft Bot Framework](https://dev.botframework.com/) in C# (.NET). I do my best to get you the latest information on cryptocurrencies, such as prices, trading, mining information, etc.  I am not perfect, however my creators are improving me as much as they can. I support a variety of platforms, supported by Microsoft. Right now you can add me on Skype or contact me via Web chat, but in the near future, I will support Slack, Bing, Facebook messenger, E-mail, Cortana and others!
+
+## What do I do?
+I can get you trading information on multiple cryptocurrency exchanges. I currently support [Kraken](https://www.kraken.com) and [Bittrex](https://bittrex.com/). I can also get you information about your mining rigs set up on [Ethermine](https://ethermine.org/). You can also ask me about weather in Slovenia, however, that is about to change soon, as a new bot, made specifically for weather, is coming up! :)
+
+## What is planned for me in the future?
+I would love to trade with cryptocurrencies directly! Also, I'd like to add more mining sites, more exchanges and more data. If possible, I wouldn't mind sending you some graphs on the market movement of cryptocurrencies either.
+Would you like me to have something? Message one of my creators!
