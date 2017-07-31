@@ -14,9 +14,11 @@ Would you like me to have something? Message one of my creators!
 
 ## FAQ
 > Bot is so slow to respond! 
+
 Unfortunately, CryptoBot is hosted on a Dreamspark Azure subscription, which do not allow for an "always on" state. This means the first request to the bot is going to take a long time, perhaps more than a minute. Please be patient, as all next questions you will have for the CryptoBot are going to be much faster! :)
 
 > Website does not load / loads slowly.
+
 For the same reason as above, unfortunately this is a limitation of current Azure subscription. It should respond in a minute or two - please try refreshing the page. If issue persists, please contact the creators since something probably went terribly wrong.
 
 ### Supported commands
