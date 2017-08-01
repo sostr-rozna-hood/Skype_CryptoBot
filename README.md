@@ -23,7 +23,7 @@ For the same reason as above, unfortunately this is a limitation of current Azur
 
 > Bot says "Sorry, my code is having an issue."
 
-If you are using Skype, this is most likely due to a compatibility issue - we are looking into that. However, if you experience this using other means of communication, please report it to us as this is unexpected behaviour. Most likely a bug hid somewhere in our code :)
+If you are using Skype, this is probably due to a compatibility issue - we are looking into that and will try to fix is ASAP. However, if you experience this using other means of communication, please report it to us as this is unexpected behaviour. Most likely a bug hid somewhere in our code :)
 
 
 
