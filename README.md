@@ -21,6 +21,12 @@ Unfortunately, CryptoBot is hosted on a Dreamspark Azure subscription, which do 
 
 For the same reason as above, unfortunately this is a limitation of current Azure subscription. It should respond in a minute or two - please try refreshing the page. If issue persists, please contact the creators since something probably went terribly wrong.
 
+> Bot says "Sorry, my code is having an issue."
+
+If you are using Skype, this is most likely due to a compatibility issue - we are looking into that. However, if you experience this using other means of communication, please report it to us as this is unexpected behaviour. Most likely a bug hid somewhere in our code :)
+
+
+
 ### Supported commands
 You can also check the supported commands by sending me "help" (without quotations). 
 
